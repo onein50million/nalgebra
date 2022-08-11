@@ -26,7 +26,7 @@ use std::mem;
  */
 /// A array-based statically sized matrix data storage.
 #[repr(transparent)]
-#[derive(Copy, Clone, PartialEq, Eq, Hash)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, bincode::Encode, bincode::Decode)]
 #[cfg_attr(feature = "rkyv-serialize", derive(bytecheck::CheckBytes))]
 #[cfg_attr(
     feature = "rkyv-serialize-no-std",

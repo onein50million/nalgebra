@@ -149,7 +149,7 @@ pub type MatrixCross<T, R1, C1, R2, C2> =
 /// dynamically-sized column vector should be represented as a `Matrix<T, Dynamic, U1, S>` (given
 /// some concrete types for `T` and a compatible data storage type `S`).
 #[repr(C)]
-#[derive(Clone, Copy)]
+#[derive(Clone, Copy, bincode::Encode, bincode::Decode)]
 #[cfg_attr(feature = "rkyv-serialize", derive(bytecheck::CheckBytes))]
 #[cfg_attr(
     feature = "rkyv-serialize-no-std",

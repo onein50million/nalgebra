@@ -26,7 +26,7 @@ use std::mem;
  */
 /// A array-based statically sized matrix data storage.
 #[repr(transparent)]
-#[derive(Copy, Clone, PartialEq, Eq, Hash, bincode::Encode, bincode::Decode)]
+#[derive(Copy, Clone, PartialEq, Eq, Hash, bincode::Encode)]
 #[cfg_attr(feature = "rkyv-serialize", derive(bytecheck::CheckBytes))]
 #[cfg_attr(
     feature = "rkyv-serialize-no-std",
@@ -34,6 +34,18 @@ use std::mem;
 )]
 #[cfg_attr(feature = "cuda", derive(cust_core::DeviceCopy))]
 pub struct ArrayStorage<T, const R: usize, const C: usize>(pub [[T; R]; C]);
+
+
+impl<const R: usize, const C: usize> bincode::Decode for ArrayStorage<f64, R, C>{
+    fn decode<D: bincode::de::Decoder>(decoder: &mut D) -> Result<Self, bincode::error::DecodeError> {
+        Ok(Self(bincode::Decode::decode(decoder)?))
+    }
+}
+impl<const R: usize, const C: usize> bincode::Decode for ArrayStorage<f32, R, C>{
+    fn decode<D: bincode::de::Decoder>(decoder: &mut D) -> Result<Self, bincode::error::DecodeError> {
+        Ok(Self(bincode::Decode::decode(decoder)?))
+    }
+}
 
 impl<T, const R: usize, const C: usize> ArrayStorage<T, R, C> {
     /// Converts this array storage to a slice.
